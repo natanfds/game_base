@@ -1,7 +1,12 @@
+if arg[2] == "debug" then
+  require("lldebugger").start()
+end
+
 local input = require 'handlers.input'
 local buttons = require 'constants.buttons'
 local input_config = require 'config.inputs'
 local encode_direction = require 'utils.encode_direction'
+local command_handler = require 'handlers.command'
 
 local debug = false
 
@@ -11,7 +16,6 @@ end
 
 function love.update(dt)
     input.update()
-
 
     for _, button in ipairs(buttons) do
       if input.pressed(button) and debug then
@@ -34,7 +38,16 @@ function love.update(dt)
     local ry = input.getAxis('righty')
 
     direction = encode_direction(lx, ly)
-    print(string.format('Direction %s', direction))
+    command_handler.update(dt, direction)
+    patterns = command_handler.identify_direction_pattern()
+    if #patterns > 0 then
+      print(table.concat(patterns, ", "))
+    end
+
+    if debug then
+      print(string.format('Direction %s', direction))
+    end
+    
 
     if math.abs(lx) > input_config.sensitivity and debug then
       print(string.format('L Axis - x=%.2f', lx))
