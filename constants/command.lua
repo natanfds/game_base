@@ -17,6 +17,7 @@ command_constants = {
     downUp = "258"
   },
   dpad_buttons = {'dpup', 'dpdown', 'dpleft', 'dpright'},
+  action_buttons = {'a', 'b', 'x', 'y', 'leftshoulder', 'rightshoulder'},
   dpad_diagonals = {
     left_up = 'dpup,dpleft,dpleft,dpup',
     right_up = 'dpup,dpright,dpright,dpup,',
