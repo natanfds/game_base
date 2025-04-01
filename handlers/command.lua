@@ -6,6 +6,8 @@ local command = {
     lastInputTime = 0
 }
 
+---@param currentTime number
+---@return boolean
 function command.has_expired(currentTime)
     if #command.buffer == 0 then
         return false
@@ -14,6 +16,8 @@ function command.has_expired(currentTime)
     return passed_time > command_constants.maxTime
 end
 
+---@param currentTime number
+---@return void
 function command.clear_inputs(currentTime)
     while #command.buffer > command_constants.bufferSize do
         table.remove(command.buffer, 1)
@@ -24,6 +28,8 @@ function command.clear_inputs(currentTime)
     end
 end
 
+---@param btn string
+---@return boolean
 function command.not_registered(btn)
     if #command.buffer == 0 then
         return true
@@ -31,6 +37,9 @@ function command.not_registered(btn)
     return btn ~= command.buffer[#command.buffer].btn
 end
 
+---@param dt number
+---@param btn string
+---@return void
 function command.update(dt, btn)
     local currentTime = love.timer.getTime()
 
@@ -45,6 +54,7 @@ function command.update(dt, btn)
     command.clear_inputs(currentTime)
 end
 
+---@return string[]
 function command.identify_direction_pattern()
     registered_patterns = {}
     current_inputs = {}

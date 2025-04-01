@@ -11,10 +11,13 @@ local command_constants = require "constants.command"
 
 local debug = false
 
+---@return void
 function love.load()
     input.init()
 end
 
+---@param dt number
+---@return void
 function love.update(dt)
     input.update()
 
@@ -98,6 +101,7 @@ function love.update(dt)
     end
 end
 
+---@return void
 function love.draw()
     love.graphics.print('Hello World!', 400, 300)
 end

@@ -1,3 +1,4 @@
+---@type string[]
 local buttons = {
   'a', 'b', 'x', 'y',
   'back', 'guide', 'start',
