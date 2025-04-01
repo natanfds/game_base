@@ -7,6 +7,7 @@ local buttons = require 'constants.buttons'
 local input_config = require 'config.inputs'
 local encode_direction = require 'utils.encode_direction'
 local command_handler = require 'handlers.command'
+local command_constants = require "constants.command"
 
 local debug = false
 
@@ -17,27 +18,51 @@ end
 function love.update(dt)
     input.update()
 
+    local current_dpad = {}
     for _, button in ipairs(buttons) do
-      if input.pressed(button) and debug then
-        print(string.format('BTN %s pressed', button))
+      local button_is_dpad = string.find(table.concat(command_constants.dpad_buttons, ","), button)
+      if input.pressed(button) then
+        if button_is_dpad then
+          table.insert(current_dpad, button)
+        end
+        if debug then
+          print(string.format('BTN %s pressed', button))
+        end
       end
-      
-      if input.released(button) and debug then
+      if input.released(button) then
+        if debug then
           print(string.format('BTN %s released', button))
+        end
       end
       
-      if input.isDown(button) and debug then
+      if input.isDown(button) then
+        if button_is_dpad then
+          local button_already_registered = string.find(table.concat(current_dpad, ","), button)
+          if not button_already_registered then
+            table.insert(current_dpad, button)
+          end
+        end
+        if debug then
           print(string.format('BTN %s still pressed', button))
+        end
       end
     end
 
     
+    ---@type number
     local lx = input.getAxis('leftx')
+    ---@type number
     local ly = input.getAxis('lefty')
+    ---@type number
     local rx = input.getAxis('rightx')
+    ---@type number
     local ry = input.getAxis('righty')
 
-    direction = encode_direction(lx, ly)
+    ---@type string
+    local direction = encode_direction.axis(lx, ly)
+    if direction == "5" then
+      direction = encode_direction.dpad(current_dpad)
+    end
     command_handler.update(dt, direction)
     patterns = command_handler.identify_direction_pattern()
     if #patterns > 0 then

@@ -15,6 +15,13 @@ command_constants = {
     backFoward = "456",
     fowardBack = "654",
     downUp = "258"
+  },
+  dpad_buttons = {'dpup', 'dpdown', 'dpleft', 'dpright'},
+  dpad_diagonals = {
+    left_up = 'dpup,dpleft,dpleft,dpup',
+    right_up = 'dpup,dpright,dpright,dpup,',
+    left_down = 'dpdown,dpleft,dpleft,dpdown',
+    right_down = 'dpdown,dpright,dpright,dpdown'
   }
 }
 
