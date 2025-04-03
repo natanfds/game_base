@@ -56,7 +56,18 @@ function love.update(dt)
         end
       end
     end
+    
 
+    local triggerL = input.getAxis('triggerleft')
+    local triggerR = input.getAxis('triggerright')
+
+    if triggerL > 0 then
+      table.insert(current_actions, 'triggerleft')
+    end
+
+    if triggerR > 0 then
+      table.insert(current_actions, 'triggerright')
+    end
     
     ---@type number
     local lx = input.getAxis('leftx')
@@ -78,9 +89,6 @@ function love.update(dt)
       print(cmd.pattern)
       print(table.concat(cmd.action, ", "))
     end
-
-    local triggerL = input.getAxis('triggerleft')
-    local triggerR = input.getAxis('triggerright')
 
 end
 
