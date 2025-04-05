@@ -6,11 +6,13 @@ local input = require 'handlers.input'
 local buttons = require 'constants.buttons'
 local input_config = require 'config.inputs'
 local encode_direction = require 'utils.encode_direction'
-local command_handler = require 'handlers.command'
+local CommandHandler = require 'handlers.command'
 local command_constants = require "constants.command"
 local list_utils = require "utils.list"
 
 local debug = false
+
+local command_handler = CommandHandler:new()
 
 ---@return void
 function love.load()
@@ -49,18 +51,6 @@ function love.update(dt)
       end
       
       if input.isDown(button) then
-        -- if button_is_dpad then
-        --   local dpad_already_registered = list_utils.in_list(current_dpad, button)
-        --   if not dpad_already_registered then
-        --     table.insert(current_dpad, button)
-        --   end
-        -- elseif button_is_action then
-        --   local action_already_registered = list_utils.in_list(current_actions, button)
-        --   if not action_already_registered then
-        --     table.insert(current_actions, button)
-        --   end
-          
-        -- end
       end
     end
 
@@ -90,8 +80,9 @@ function love.update(dt)
       direction = encode_direction.dpad(current_dpad)
     end
 
-    command_handler.update(dt, direction, current_actions)
-    local commands_found = command_handler.identify_command()
+    command_handler:update(dt, direction, current_actions)
+    local commands_found = command_handler:identify_command()
+
     for _, cmd in pairs(commands_found) do
       print(cmd.pattern)
       print(table.concat(cmd.action, ", "))
