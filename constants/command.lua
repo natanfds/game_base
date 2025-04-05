@@ -1,5 +1,5 @@
 command_constants = {
-  maxTime = 2,
+  maxTime = 5,
   bufferSize = 10,
   patterns = {
     quarterCircleFoward = "236",
